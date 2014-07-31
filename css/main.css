@@ -108,7 +108,8 @@ body{
 }
 .title{
     color: #fff;
-    font-family: 'Open Sans', sans-serif !important;
+    font-family: 'Open Sans', sans-serif;
+    font-style: italic;
 }
 .container{
     max-width: 320px;
