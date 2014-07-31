@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app="App"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Meteo @ Random</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <meta property="og:type"            content="website" /> 
+<meta property="og:url"             content="http://ilmeteorandom.it" /> 
+<meta property="og:title"           content="Meteo @ Random" /> 
+<meta property="og:image"           content="http://ilmeteorandom.it/img/logo.png" /> 
+
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/weather-icons.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:800italic' rel='stylesheet' type='text/css'>
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body ng-controller="AppController" ng-cloak>
+        <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/it_IT/sdk.js#xfbml=1&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+        <!--[if lt IE 8]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="container">
+        
+            <div class="row">
+                
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12"><h1 class="title">Meteo@Random</h1></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <span class="input-group-addon" style="cursor:pointer;" ng-click="geo()"><span class="glyphicon glyphicon-map-marker"></span></span>
+                                <select class="form-control" ng-change="randomDays()" ng-model="selR">
+                                    <option value="city" selected>{{city}}</option>
+                                    <option ng-repeat="region in regions">{{region}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12" ng-show="alert">
+                    <div class="row">
+                        <div class="col-md-12"><div class="alert alert-danger" role="alert"></div></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12" ng-repeat="day in days">
+                    <div class="panel" ng-class="day.condition.class">
+                        <div>
+                            <div class="date">{{day.date}}</div>
+                            <div class="text-center"><span class="wi wi-{{day.condition.icon}}"></span></div>
+                            <div class="row">
+                                <div class="col-md-6 col-sm-6 col-xs-6 text-center"><div class="temperature">{{day.temperature}}°</div></div>
+                                <div class="col-md-6 col-sm-6 col-xs-6"><div class="condition">{{day.condition.label}}</div></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12"><div class="alert alert-info" role="alert">
+                            
+				<h4 style="cursor:pointer;margin-top:10px;" ng-click="showinfo=!showinfo">Cos'è Meteo@Random? &nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-down" ng-show="!showinfo"></span><span class="glyphicon glyphicon-chevron-up" ng-show="showinfo"></span></h4>
+				<div ng-show="showinfo">
+					<p>Meteo@Random nasce da questo <a target="_blank" href="https://twitter.com/Auloedus/status/493444915771101184">tweet</a> di <a target="_blank" href="https://twitter.com/Auloedus">@Auloedus</a>
+                    e da del tempo (non in senso atmosferico) che <a target="_blank" href="https://twitter.com/samskeyti79">@samskeyti79</a> aveva da perdere.
+                    </p> 
+                    <p>È un'app fatta per puro svago, senza nessuno scopo utile se non quello di avere un ennesimo servizio che fa le previsioni, a volte non meno preciso degli altri. Meteo@Random puoi usarlo finché non esce la previsione che desideri così puoi fare quello che avevi programmato infischiandotene di quello che dicono gli altri siti.</p>
+                    <p>Decliniamo ogni responsabilità, quindi, albergatori, non denunciateci se non vengono i turisti perché è prevista una <i>Pioggia di meteore</i>&trade;.</p>
+				</div>
+			
+                            </div></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12"><div class="alert alert-warning" role="alert">
+                            
+				<h3 style="cursor:pointer;margin-top:10px;" ng-click="showapp=!showapp">Trasforma in un'app &nbsp;&nbsp;<span class="glyphicon glyphicon-chevron-down" ng-show="!showapp"></span><span class="glyphicon glyphicon-chevron-up" ng-show="showapp"></span></h3>
+				<div ng-show="showapp">
+					<p>Per salvare questa pagina web e usarla come applicazione sul telefono segui queste istruzioni:</p>
+					<h4>con iPhone o iPad</h4>
+					<p>Su <i>Safari</i> trova questa icona <img src="img/home.svg" alt=""> (in basso nell'iPhone o in alto nell'iPad) premila e poi scegli <em>Aggiungi a Home</em>.</p>
+					<h4>con Android</h4>
+					<p>Su Chrome tra le opzioni c'è il tasto <em>Aggiungi a home</em> oppure con il Browser salva la pagina tra i preferiti poi vai in widget, seleziona <em>segnalibro</em> e scegli la pagina "Meteo @ Random".</p>
+					<h4>con Windows Phone</h4>
+					<p>Premi su Altro (bottone in basso a destra, quello con tre puntini) quindi premi su <em>Aggiungi a Start</em>.</p>
+				</div>
+			
+                            </div></div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-6"><div class="fb-like" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false"></div></div>
+                        <div class="col-md-6 col-sm-6"><a href="https://twitter.com/share" class="twitter-share-button" data-lang="it" data-related="samskeyti79,auloedus">Tweet</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script></div>
+                    </div>
+                    <small class="text-muted">weather icons by <a target="_blank" href="http://erikflowers.github.io/weather-icons/">erikflowers</a></small>
+                </div>
+               
+                    
+            </div>
+        
+        </div>
+        
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.10.2.min.js"><\/script>')</script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+        <script>window.angular || document.write('<script src="js/angular.min.js"><\/script>')</script>
+        <script src="https://maps.google.com/maps/api/js?sensor=false"></script>
+        <script src="js/plugins.js"></script>
+        <script src="js/moment.min.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
+            function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
+            e=o.createElement(i);r=o.getElementsByTagName(i)[0];
+            e.src='//www.google-analytics.com/analytics.js';
+            r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
+            ga('create','UA-50024349-1');ga('send','pageview');
+        </script>
+    </body>
+</html>
